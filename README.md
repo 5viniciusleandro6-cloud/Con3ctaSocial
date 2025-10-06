@@ -1,2 +1,1 @@
-ate agr só coloquei o templet so site ba
-sico
+ate agr só coloquei o templet so site basico
