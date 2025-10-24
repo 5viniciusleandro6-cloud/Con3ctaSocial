@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pegada Ecológica | Conecta Social</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-green-50 text-gray-800">
+
+<header class="p-4 bg-green-700 text-white flex justify-between">
+  <a href="index.html" class="font-bold">← Voltar</a>
+  <h1 class="font-semibold">Teste sua Pegada Ecológica</h1>
+</header>
+
+<section class="p-10 max-w-3xl mx-auto text-center">
+  <h2 class="text-3xl text-green-800 font-bold mb-6">Descubra seu impacto no planeta 🌱</h2>
+  
+  <form id="quiz" class="space-y-6 text-left bg-white p-8 rounded-xl shadow transition-all duration-500">
+    <div>
+      <label class="font-semibold">1️⃣ Você costuma apagar as luzes ao sair dos cômodos?</label>
+      <select class="mt-2 p-2 border rounded w-full">
+        <option value="3">Sempre</option>
+        <option value="2">Às vezes</option>
+        <option value="1">Raramente</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="font-semibold">2️⃣ Você separa o lixo reciclável corretamente?</label>
+      <select class="mt-2 p-2 border rounded w-full">
+        <option value="3">Sim, sempre</option>
+        <option value="2">Às vezes</option>
+        <option value="1">Nunca</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="font-semibold">3️⃣ Você utiliza transporte público, bicicleta ou caminha com frequência?</label>
+      <select class="mt-2 p-2 border rounded w-full">
+        <option value="3">Sim, regularmente</option>
+        <option value="2">Às vezes</option>
+        <option value="1">Quase nunca</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="font-semibold">4️⃣ Você evita o uso de copos, talheres e sacolas descartáveis?</label>
+      <select class="mt-2 p-2 border rounded w-full">
+        <option value="3">Sim, sempre</option>
+        <option value="2">Às vezes</option>
+        <option value="1">Não costumo</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="font-semibold">5️⃣ Você compra produtos de origem sustentável ou local?</label>
+      <select class="mt-2 p-2 border rounded w-full">
+        <option value="3">Frequentemente</option>
+        <option value="2">Às vezes</option>
+        <option value="1">Raramente</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="font-semibold">6️⃣ Você procura se informar sobre temas ambientais e mudanças climáticas?</label>
+      <select class="mt-2 p-2 border rounded w-full">
+        <option value="3">Frequentemente</option>
+        <option value="2">Às vezes</option>
+        <option value="1">Raramente</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="font-semibold">7️⃣ Você evita o desperdício de alimentos em casa?</label>
+      <select class="mt-2 p-2 border rounded w-full">
+        <option value="3">Frequentemente</option>
+        <option value="2">Às vezes</option>
+        <option value="1">Raramente</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="font-semibold">8️⃣ Você compartilha ou incentiva outras pessoas a terem hábitos sustentáveis?</label>
+      <select class="mt-2 p-2 border rounded w-full">
+        <option value="3">Sim, frequentemente</option>
+        <option value="2">Às vezes</option>
+        <option value="1">Raramente</option>
+      </select>
+    </div>
+
+    <button type="button" id="calcular" class="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 w-full transition-all">
+      Calcular minha Pegada
+    </button>
+  </form>
+
+  <div id="resultado" class="mt-8 hidden bg-white p-6 rounded-xl shadow text-lg font-semibold">
+    <div id="emoji" class="text-5xl mb-3"></div>
+    <div id="mensagem"></div>
+    <div class="w-full bg-gray-200 rounded-full h-4 mt-6">
+      <div id="barra" class="h-4 rounded-full bg-green-600 transition-all duration-700" style="width: 0%;"></div>
+    </div>
+    <ul id="dicas" class="text-left mt-6 text-base text-gray-700 list-disc list-inside"></ul>
+  </div>
+</section>
+
+<script>
+document.getElementById('calcular').addEventListener('click', () => {
+  const valores = [...document.querySelectorAll('#quiz select')].map(sel => parseInt(sel.value));
+  const total = valores.reduce((a,b)=>a+b,0);
+  const max = valores.length * 3;
+  const resultado = document.getElementById('resultado');
+  const mensagem = document.getElementById('mensagem');
+  const emoji = document.getElementById('emoji');
+  const barra = document.getElementById('barra');
+  const dicas = document.getElementById('dicas');
+
+  let msg = '';
+  let emojiIcon = '';
+  let cor = '';
+  let progresso = (total / max) * 100;
+  let sugestoes = [];
+
+  if(total >= max * 0.75) {
+    msg = '🌿 Parabéns! Sua pegada é leve e sustentável. Continue sendo exemplo!';
+    emojiIcon = '🌎';
+    cor = 'bg-green-600';
+    sugestoes = [
+      'Continue inspirando outros colegas.',
+      'Participe de projetos ambientais da sua faculdade.',
+      'Apoie iniciativas locais de reflorestamento.'
+    ];
+  } 
+  else if(total >= max * 0.5) {
+    msg = '🌾 Boa! Você está no caminho certo — pequenas mudanças podem fazer grande diferença.';
+    emojiIcon = '🌤️';
+    cor = 'bg-yellow-500';
+    sugestoes = [
+      'Evite produtos descartáveis.',
+      'Prefira andar a pé ou de bicicleta.',
+      'Reforce o hábito de separar o lixo sempre.'
+    ];
+  } 
+  else {
+    msg = '🔥 Sua pegada ecológica está alta. Que tal começar com pequenas mudanças hoje?';
+    emojiIcon = '🌋';
+    cor = 'bg-red-600';
+    sugestoes = [
+      'Apague as luzes ao sair.',
+      'Reduza o uso de plásticos.',
+      'Busque conhecer mais sobre consumo sustentável.'
+    ];
+  }
+
+  // Atualiza o resultado na tela
+  resultado.classList.remove('hidden');
+  emoji.textContent = emojiIcon;
+  mensagem.textContent = msg;
+  barra.className = `h-4 rounded-full transition-all duration-700 ${cor}`;
+  barra.style.width = progresso + '%';
+
+  dicas.innerHTML = '';
+  sugestoes.forEach(d => {
+    const li = document.createElement('li');
+    li.textContent = d;
+    dicas.appendChild(li);
+  });
+
+  resultado.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Dentro do seu script JS, no final da função de cálculo
+fetch('https://seu-servidor.com/api/respostas', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    total: total,
+    dataHora: new Date().toISOString()
+  })
+})
+.then(res => res.json())
+.then(data => console.log('Resposta salva:', data))
+.catch(err => console.error('Erro ao salvar:', err));
+
+</script>
+
+</body>
+</html>
